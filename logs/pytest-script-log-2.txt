@@ -1,0 +1,59 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.2, pluggy-1.6.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /var/lib/jenkins/workspace/01_TC_Gen
+collecting ... collected 20 items
+
+src/test_api.py::test_insert_valid_document PASSED                       [  5%]
+src/test_api.py::test_insert_with_different_severity PASSED              [ 10%]
+src/test_api.py::test_insert_with_multiple_tags PASSED                   [ 15%]
+src/test_api.py::test_insert_with_large_document PASSED                  [ 20%]
+src/test_api.py::test_insert_with_empty_tags PASSED                      [ 25%]
+src/test_api.py::test_insert_with_future_timestamp PASSED                [ 30%]
+src/test_api.py::test_insert_with_invalid_severity_type PASSED           [ 35%]
+src/test_api.py::test_insert_with_null_fields PASSED                     [ 40%]
+src/test_api.py::test_insert_with_minimum_document PASSED                [ 45%]
+src/test_api.py::test_insert_with_empty_document PASSED                  [ 50%]
+src/test_api.py::test_insert_with_invalid_timestamp_format PASSED        [ 55%]
+src/test_api.py::test_insert_with_negative_severity_value PASSED         [ 60%]
+src/test_api.py::test_insert_with_mongo_db_as_number FAILED              [ 65%]
+
+=================================== FAILURES ===================================
+_____________________ test_insert_with_mongo_db_as_number ______________________
+
+    def test_insert_with_mongo_db_as_number():
+        """TC-13: Negative - Invalid DB name type (int instead of string)"""
+        payload = {
+            "tool_name": "mongo_insert",
+            "parameters": {
+                "user_id": "00000000-0000-0000-0000-000000000006",
+                "MONGO_URI": "mongodb://admin:aziron123@172.30.47.194:27017",
+                "MONGO_DB": 12345,  # Invalid type
+                "MONGO_COLLECTION": "postman_test",
+                "document": {
+                    "level": "CRITICAL",
+                    "message": "Bad DB type",
+                    "timestamp": "2025-09-19T01:00:00Z",
+                    "app_name": "neg_test",
+                    "severity": 5,
+                    "tags": ["db", "invalid"]
+                }
+            }
+        }
+        logger.info("test_insert_with_mongo_db_as_number::payload : %s", payload)
+        status, result = call_api(payload)
+        logger.info("test_insert_with_mongo_db_as_number::status : %s", status)
+        logger.info("test_insert_with_mongo_db_as_number::result : %s", result)
+>       assert status == 200
+E       assert 500 == 200
+
+src/test_api.py:343: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     test_api:test_api.py:339 test_insert_with_mongo_db_as_number::payload : {'tool_name': 'mongo_insert', 'parameters': {'user_id': '00000000-0000-0000-0000-000000000006', 'MONGO_URI': 'mongodb://admin:aziron123@172.30.47.194:27017', 'MONGO_DB': 12345, 'MONGO_COLLECTION': 'postman_test', 'document': {'level': 'CRITICAL', 'message': 'Bad DB type', 'timestamp': '2025-09-19T01:00:00Z', 'app_name': 'neg_test', 'severity': 5, 'tags': ['db', 'invalid']}}}
+INFO     test_api:test_api.py:341 test_insert_with_mongo_db_as_number::status : 500
+INFO     test_api:test_api.py:342 test_insert_with_mongo_db_as_number::result : {'error': 'Tool execution failed: MONGO_DB is required', 'status': 500, 'timestamp': '2025-09-29T06:17:26Z'}
+=========================== short test summary info ============================
+FAILED src/test_api.py::test_insert_with_mongo_db_as_number - assert 500 == 200
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+========================= 1 failed, 12 passed in 0.23s =========================
+❌ Tests failed with exit code 1
