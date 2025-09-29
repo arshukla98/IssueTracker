@@ -1,0 +1,52 @@
+Started by user admin
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/01_TC_Gen
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $GITHUB_TOKEN or $SSH_CREDS or $SSH_CREDS_PSW
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout Repo)
+[Pipeline] git
+The recommended git tool is: NONE
+using credential github-creds
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/01_TC_Gen/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/yashmsys/test_mcp_server.git # timeout=10
+Fetching upstream changes from https://github.com/yashmsys/test_mcp_server.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.34.1'
+using GIT_ASKPASS to set credentials github-creds
+ > git fetch --tags --force --progress -- https://github.com/yashmsys/test_mcp_server.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 68e15bdac90a737f4409fb5c988c8a49cb5c0a60 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 68e15bdac90a737f4409fb5c988c8a49cb5c0a60 # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main 68e15bdac90a737f4409fb5c988c8a49cb5c0a60 # timeout=10
+Commit message: "Added more test cases"
+ > git rev-list --no-walk 68e15bdac90a737f4409fb5c988c8a49cb5c0a60 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run Test Script)
+[Pipeline] sh
++ rm -rf log/test_run_20250929_114124.txt
+[Pipeline] sh
++ sh test.sh
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] archiveArtifacts
+Archiving artifacts
+[Pipeline] sh
++ cat log/test_run_20250929_114726.txt
+[Pipeline] archiveArtifacts
+Archiving artifacts
+[Pipeline] script
+[Pipeline] {
